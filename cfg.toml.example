@@ -1,0 +1,7 @@
+# Configuration file for WiFi, MQTT, and hardware setup
+[splitflap-rs]
+mqtt_host = ""
+mqtt_user = ""
+mqtt_pass = ""
+wifi_ssid = ""
+wifi_psk = ""

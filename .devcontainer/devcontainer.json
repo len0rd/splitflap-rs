@@ -1,0 +1,14 @@
+{
+	"image": "espressif/idf-rust:esp32_latest",
+    "mounts": [
+        {"source": "/dev", "target": "/dev", "type":"bind"},
+    ],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"bungcip.better-toml"
+			]
+		}
+	}
+}
