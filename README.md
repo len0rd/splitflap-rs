@@ -14,3 +14,7 @@ ESP32-DOWDQ6 V3
 ## Development
 
 It is easiest to do development from within a container for [esp32 rust](https://hub.docker.com/r/espressif/idf-rust/tags). For convenience, a [VSCode devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) using this image is provided.
+
+cargo build
+
+espflash /dev/ttyACM0 --monitor target/xtensa-esp32-espidf/debug/splitflap-rs
