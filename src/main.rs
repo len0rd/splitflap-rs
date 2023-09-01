@@ -3,24 +3,21 @@ use esp_idf_svc::eventloop::EspSystemEventLoop;
 use esp_idf_svc::nvs::EspDefaultNvsPartition;
 use esp_idf_svc::timer::EspTaskTimerService;
 use esp_idf_sys as _; // If using the `binstart` feature of `esp-idf-sys`, always keep this module imported
-use esp_idf_sys::EspError;
-use futures::FutureExt;
 use log::*;
 use splitflap_rs::wifi;
 
 use esp_idf_hal::{delay, gpio, prelude::*, spi};
 
 use display_interface_spi::SPIInterfaceNoCS;
-use embedded_graphics::prelude::*;
 use embedded_graphics::{
-    image::*,
     mono_font::{ascii::FONT_10X20, MonoTextStyle},
     pixelcolor::Rgb565,
-    text::{Alignment, Text},
+    prelude::*,
+    text::Text,
 };
 use esp_idf_svc::{wifi::AsyncWifi, wifi::EspWifi};
 use futures::executor::block_on;
-use mipidsi::{Builder, Orientation};
+use mipidsi::Builder;
 use std::thread;
 use std::time::Duration;
 
@@ -92,9 +89,7 @@ fn main() -> anyhow::Result<()> {
 
     let display_interface = SPIInterfaceNoCS::new(spi, dc);
 
-    let mut display = Builder::st7789(display_interface)
-        .with_display_size(240, 320)
-        .with_orientation(Orientation::Portrait(false))
+    let mut display = Builder::st7789_pico1(display_interface)
         .init(&mut delay, Some(rst))
         .unwrap();
 
@@ -102,25 +97,14 @@ fn main() -> anyhow::Result<()> {
     display.clear(Rgb565::BLACK).unwrap();
     log::info!("ST7789 initialized");
 
-    let raw_image_data = ImageRawLE::new(include_bytes!("../assets/ferris.raw"), 86);
-    let ferris = Image::new(&raw_image_data, Point::new(120, 160));
-    ferris.draw(&mut display).unwrap();
-
-    // let font_style = MonoTextStyle::new(&FONT_10X20, Rgb565::BLUE);
-    // Text::with_alignment("ABC", Point::new(20, 20), font_style, Alignment::Center)
-    //     .draw(&mut display)
-    //     .expect("failed to write text!");
+    let style: MonoTextStyle<'_, Rgb565> = MonoTextStyle::new(&FONT_10X20, Rgb565::WHITE);
+    let text = "heyyoo";
+    Text::new(text, Point::new(20, 30), style)
+        .draw(&mut display)
+        .unwrap();
 
     let mut ii: u8 = 0;
     loop {
-        // Text::with_alignment(
-        //     format!("123456789abc\nabcdefghi{:03}", ii).as_str(),
-        //     Point::new(0, 0),
-        //     font_style,
-        //     Alignment::Left,
-        // )
-        // .draw(&mut display)
-        // .unwrap();
         thread::sleep(Duration::from_millis(1000));
 
         ii = ii + 1;

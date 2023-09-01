@@ -17,4 +17,8 @@ It is easiest to do development from within a container for [esp32 rust](https:/
 
 cargo build
 
-espflash /dev/ttyACM0 --monitor target/xtensa-esp32-espidf/debug/splitflap-rs
+espflash flash --port /dev/ttyACM0 --monitor target/xtensa-esp32-espidf/debug/splitflap-rs
+
+
+
+https://lilymara.xyz/posts/images-esp32/
